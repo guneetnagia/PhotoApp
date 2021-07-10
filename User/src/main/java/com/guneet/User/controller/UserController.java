@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.guneet.User.service.UserService;
+import com.guneet.User.service.UserServiceImpl;
 import com.guneet.User.shared.UserDto;
 import com.guneet.User.ui.model.CreateRequestModel;
 import com.guneet.User.ui.model.CreateResponseModel;
@@ -29,6 +32,8 @@ public class UserController {
 	// update user
 	// delete user
 	
+	public static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	@Autowired
 	private Environment env;
 	
@@ -42,12 +47,13 @@ public class UserController {
 	
 	@GetMapping("/status/check")
 	private String status() {
+		log.info("users status check");
 		return "working on port " + env.getProperty("local.server.port");
 	}
 	
 	@PostMapping
 	public ResponseEntity<CreateResponseModel> createUser(@Valid @RequestBody CreateRequestModel userDetails) {
-		
+		log.info("inside users controller");
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
