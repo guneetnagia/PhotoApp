@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public UserDto createUser(UserDto userDetails) {
+		log.info("inside "+this.getClass() + " " + "createUser");
 		userDetails.setUserId(UUID.randomUUID().toString());
 		
 		ModelMapper modelMapper = new ModelMapper();
