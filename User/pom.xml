@@ -51,15 +51,13 @@
 		</dependency>
 
 		<dependency>
-       		 <groupId>org.springframework.cloud</groupId>
-      	  	 <artifactId>spring-cloud-starter-zipkin</artifactId>
-      	  	 <version>2.2.8.RELEASE</version>
-    	</dependency>
-    	
-		<!-- <dependency>
-       		 <groupId>org.springframework.cloud</groupId>
-      	  	<artifactId>spring-cloud-starter-sleuth</artifactId>
-    	</dependency> -->
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-zipkin</artifactId>
+			<version>2.2.8.RELEASE</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.springframework.cloud</groupId> <artifactId>spring-cloud-starter-sleuth</artifactId> 
+			</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -85,6 +83,26 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- <plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+							<goal>push</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>microservice-docker-${project.artifactId}</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+						<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
+				</configuration>
+			</plugin> -->
 		</plugins>
 		<finalName>users-app</finalName>
 	</build>
