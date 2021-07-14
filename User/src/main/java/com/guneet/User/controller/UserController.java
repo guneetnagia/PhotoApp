@@ -1,5 +1,10 @@
 package com.guneet.User.controller;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -40,6 +45,8 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+
+	
 	@GetMapping("/hello")
 	private String welcome() {
 		return "hello";
@@ -53,7 +60,7 @@ public class UserController {
 	
 	@PostMapping
 	public ResponseEntity<CreateResponseModel> createUser(@Valid @RequestBody CreateRequestModel userDetails) {
-		log.info("inside users controller");
+		log.info(this.getClass().getName() +  "CreateUser method is called");
 		ModelMapper modelMapper = new ModelMapper();
 		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
@@ -64,6 +71,24 @@ public class UserController {
 		CreateResponseModel returnValue = modelMapper.map(createUser,CreateResponseModel.class); 
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<CreateResponseModel>> getAllUsers(){
+		log.info(this.getClass().getName() +  "getAllUsers method is called");
+		
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		
+		List<UserDto> allUsers = userService.findAllUsers();
+		
+		List<CreateResponseModel> returnValue = Optional.ofNullable(allUsers)
+				.orElseGet(Collections::emptyList)
+				.stream()
+				.map(user -> modelMapper.map(user, CreateResponseModel.class))
+				.collect(Collectors.toList())
+				;
+		return ResponseEntity.status(HttpStatus.OK).body(returnValue);
 	}
 	
 }

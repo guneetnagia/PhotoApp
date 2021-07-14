@@ -1,6 +1,8 @@
 package com.guneet.User.service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -26,7 +28,7 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public UserDto createUser(UserDto userDetails) {
-		log.info("inside "+this.getClass() + " " + "createUser");
+		log.info("inside "+this.getClass() + " service method : " + "createUser" + " is called");
 		userDetails.setUserId(UUID.randomUUID().toString());
 		
 		ModelMapper modelMapper = new ModelMapper();
@@ -37,6 +39,20 @@ public class UserServiceImpl implements UserService{
 		
 		userRepository.save(userEntity);
 		UserDto returnValue = modelMapper.map(userEntity, UserDto.class);
+		return returnValue;
+	}
+
+	@Override
+	public List<UserDto> findAllUsers() {
+		log.info("inside "+this.getClass() + " service method : " + "findAllUsers" + " is called");
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+		List<UserEntity> userEntities = userRepository.findAll();
+		List<UserDto> returnValue = userEntities
+				.stream()
+				.map(users->modelMapper.map(users, UserDto.class))
+				.collect(Collectors.toList());
+				
 		return returnValue;
 	}
 
